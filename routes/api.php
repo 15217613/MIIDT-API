@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -52,10 +53,6 @@ Route::get('/prueba', function () {
     return Hash::make('password');
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware(['auth:api'])->apiResource('/assignedUnit', AssignedUnitController::class)->names('api.assignedUnit');
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/attendanceRecord/registerAttendance', [AttendanceRecordController::class, 'registerAttendance'])->name('api.attendanceRecord.registerAttendance');
@@ -74,6 +71,7 @@ Route::middleware(['auth:api'])->apiResource('/learningUnitOffered', LearningUni
 Route::middleware(['auth:api'])->apiResource('/lies', LiesController::class)->names('api.lies')->parameters([
     'lies' => 'lies', // Forzar el nombre del parámetro a "lies"
 ]);
+Route::post('login', [LoginController::class, 'store'])->name('api.login');
 Route::middleware(['auth:api'])->apiResource('/nativeLanguage', NativeLanguageController::class)->names('api.nativeLanguague');
 Route::middleware(['auth:api'])->apiResource('/originInstitution', OriginInstitutionController::class)->names('api.paper');
 Route::middleware(['auth:api'])->apiResource('/paper', PaperController::class)->names('api.paper');
